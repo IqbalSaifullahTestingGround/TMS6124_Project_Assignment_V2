@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+        TMS6124 WEB AUTHORING PROJECT
+        FILE: index.html
+
+        WHAT THIS FILE DOES:
+        - Builds the visible structure of the web application.
+        - It does NOT contain the player dataset.
+        - Player and match data are loaded from xml/pickleball.xml by js/app.js.
+
+        EASY CHANGES:
+        - Change the website title in <title> and the <h1> below.
+        - Change button/menu wording in this file.
+        - Change colours/layout in css/style.css, not here.
+    -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="XML DOM CRUD-based Pickleball Tournament Management System for TMS6124 Web Authoring.">
+
+    <title>Sarawak Pickleball Championship 2026</title>
+
+    <!-- Main stylesheet. All visual design is kept in one file for easier checking. -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Small SVG icon used as the browser tab icon. -->
+    <link rel="icon" href="images/pickleball-logo.svg" type="image/svg+xml">
+
+    <!--
+        OPTIONAL EXCEL LIBRARY:
+        SheetJS is only used for the extra "Export to Excel" button.
+        The XML CRUD project still works if this CDN is unavailable.
+    -->
+    <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <!-- Main JavaScript is loaded with defer so HTML is parsed before the script runs. -->
+    <script defer src="js/app.js"></script>
+</head>
+<body data-theme="court-light">
+
+    <!-- Accessibility: keyboard users can jump directly to the main content. -->
+    <a class="skip-link" href="#mainContent">Skip to main content</a>
+
+    <!-- =========================
+         TOP HEADER
+         ========================= -->
+    <header class="site-header">
+        <div class="brand">
+            <img src="images/pickleball-logo.svg" alt="Pickleball tournament logo" width="48" height="48">
+            <div>
+                <p class="eyebrow">TMS6124 Web Authoring</p>
+                <h1>Sarawak Pickleball Championship 2026</h1>
+            </div>
+        </div>
+
+        <!-- Theme button changes the CSS theme using JavaScript. -->
+        <button id="themeButton" class="button button-secondary" type="button" aria-pressed="false">
+            Switch Theme
+        </button>
+    </header>
+
+    <!-- =========================
+         MAIN NAVIGATION
+         Each button opens one application view.
+         ========================= -->
+    <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-button active" type="button" data-view="dashboardView">Dashboard</button>
+        <button class="nav-button" type="button" data-view="playersView">Players</button>
+        <button class="nav-button" type="button" data-view="matchesView">Schedule</button>
+        <button class="nav-button" type="button" data-view="resultsView">Public Results</button>
+        <button class="nav-button" type="button" data-view="dataView">Data Tools</button>
+    </nav>
+
+    <!-- aria-live announces feedback such as "Player added successfully" to assistive technology. -->
+    <div id="messageBox" class="message-box" role="status" aria-live="polite"></div>
+
+    <main id="mainContent" class="page-shell">
+
+        <!-- ================================================================
+             VIEW 1: DASHBOARD
+             JavaScript fills the tournament details and statistics from XML.
+             ================================================================ -->
+        <section id="dashboardView" class="app-view active-view" aria-labelledby="dashboardHeading">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">Overview</p>
+                    <h2 id="dashboardHeading">Tournament Dashboard</h2>
+                </div>
+                <button id="refreshButton" class="button button-secondary" type="button">Refresh Display</button>
+            </div>
+
+            <!-- Tournament information comes from <Tournament> in pickleball.xml. -->
+            <article class="panel">
+                <h3>Tournament Information</h3>
+                <dl id="tournamentInfo" class="info-grid"></dl>
+            </article>
+
+            <!-- JavaScript updates these numbers after every CRUD action. -->
+            <div class="stats-grid" aria-label="Tournament statistics">
+                <article class="stat-card">
+                    <span id="playerCount" class="stat-number">0</span>
+                    <span class="stat-label">Players</span>
+                </article>
+                <article class="stat-card">
+                    <span id="clubCount" class="stat-number">0</span>
+                    <span class="stat-label">Clubs</span>
+                </article>
+                <article class="stat-card">
+                    <span id="matchCount" class="stat-number">0</span>
+                    <span class="stat-label">Matches</span>
+                </article>
+                <article class="stat-card">
+                    <span id="confirmedCount" class="stat-number">0</span>
+                    <span class="stat-label">Confirmed Players</span>
+                </article>
+            </div>
+
+            <div class="two-column">
+                <!-- Requirement support: show XML data grouped by club. -->
+                <article class="panel">
+                    <h3>Players by Club</h3>
+                    <div id="clubSummary"></div>
+                </article>
+
+                <!-- Requirement support: show XML data grouped by category. -->
+                <article class="panel">
+                    <h3>Players by Category</h3>
+                    <div id="categorySummary"></div>
+                </article>
+            </div>
+        </section>
+
+        <!-- ================================================================
+             VIEW 2: PLAYER MANAGEMENT
+             This is where CREATE, READ, UPDATE and DELETE are demonstrated.
+             ================================================================ -->
+        <section id="playersView" class="app-view" aria-labelledby="playersHeading" hidden>
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">XML DOM CRUD</p>
+                    <h2 id="playersHeading">Player Management</h2>
+                </div>
+                <button id="newPlayerButton" class="button button-primary" type="button">+ Add Player</button>
+            </div>
+
+            <!-- Search/filter controls only filter the current XML DOM data. -->
+            <article class="panel">
+                <div class="filter-grid">
+                    <label>
+                        Search Player
+                        <input id="playerSearch" type="search" placeholder="Name, ID or club">
+                    </label>
+
+                    <label>
+                        Category
+                        <select id="categoryFilter">
+                            <option value="">All Categories</option>
+                            <option value="Men Singles">Men Singles</option>
+                            <option value="Women Singles">Women Singles</option>
+                            <option value="Men Doubles">Men Doubles</option>
+                            <option value="Women Doubles">Women Doubles</option>
+                            <option value="Mixed Doubles">Mixed Doubles</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        Status
+                        <select id="statusFilter">
+                            <option value="">All Statuses</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Withdrawn">Withdrawn</option>
+                        </select>
+                    </label>
+                </div>
+            </article>
+
+            <!--
+                ADD / EDIT FORM
+                - Hidden when not needed.
+                - CREATE uses this form to create a new XML node.
+                - UPDATE loads an existing XML node into this form.
+            -->
+            <article id="playerFormPanel" class="panel form-panel" hidden>
+                <div class="section-heading compact-heading">
+                    <h3 id="playerFormTitle">Add New Player</h3>
+                    <button id="cancelPlayerButton" class="button button-secondary" type="button">Cancel</button>
+                </div>
+
+                <form id="playerForm">
+                    <!-- Hidden value tells JavaScript whether we are editing an existing player. -->
+                    <input id="editingPlayerId" type="hidden" value="">
+
+                    <div class="form-grid">
+                        <label>
+                            Player ID
+                            <input id="playerIdInput" type="text" required maxlength="10" placeholder="P025">
+                        </label>
+
+                        <label>
+                            Player Name
+                            <input id="playerNameInput" type="text" required maxlength="80" placeholder="Player name">
+                        </label>
+
+                        <label>
+                            Club
+                            <select id="playerClubInput" required></select>
+                        </label>
+
+                        <label>
+                            Category
+                            <select id="playerCategoryInput" required>
+                                <option value="Men Singles">Men Singles</option>
+                                <option value="Women Singles">Women Singles</option>
+                                <option value="Men Doubles">Men Doubles</option>
+                                <option value="Women Doubles">Women Doubles</option>
+                                <option value="Mixed Doubles">Mixed Doubles</option>
+                            </select>
+                        </label>
+
+                        <label>
+                            Registration Status
+                            <select id="playerStatusInput" required>
+                                <option value="Confirmed">Confirmed</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Withdrawn">Withdrawn</option>
+                            </select>
+                        </label>
+
+                        <label>
+                            Registration Fee (RM)
+                            <input id="playerFeeInput" type="number" min="0" step="0.01" required value="30.00">
+                        </label>
+                    </div>
+
+                    <button class="button button-primary" type="submit">Save Player</button>
+                </form>
+            </article>
+
+            <!-- READ: all visible rows are generated from the XML DOM by JavaScript. -->
+            <article class="panel">
+                <div class="table-wrapper">
+                    <table>
+                        <caption>Player records loaded from the current XML DOM</caption>
+                        <thead>
+                            <tr>
+                                <th>Player ID</th>
+                                <th>Name</th>
+                                <th>Club</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th>Fee</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="playersTableBody"></tbody>
+                    </table>
+                </div>
+            </article>
+
+            <!--
+                REQUIRED CATEGORY FILTER RESULT:
+                Shows only players in the selected category AND Status = Confirmed.
+            -->
+            <article class="panel">
+                <div class="section-heading compact-heading">
+                    <div>
+                        <h3>Confirmed Players by Competition Category</h3>
+                        <p class="help-text">Required filtered view. Data is read from the XML DOM.</p>
+                    </div>
+                    <label class="inline-select">
+                        Select Category
+                        <select id="confirmedCategoryFilter">
+                            <option value="Men Singles">Men Singles</option>
+                            <option value="Women Singles">Women Singles</option>
+                            <option value="Men Doubles">Men Doubles</option>
+                            <option value="Women Doubles">Women Doubles</option>
+                            <option value="Mixed Doubles">Mixed Doubles</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <caption>Confirmed players for the selected competition category</caption>
+                        <thead>
+                            <tr>
+                                <th>Player ID</th>
+                                <th>Name</th>
+                                <th>Club</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="confirmedPlayersTableBody"></tbody>
+                    </table>
+                </div>
+            </article>
+        </section>
+
+        <!-- ================================================================
+             VIEW 3: MATCH / COURT SCHEDULE
+             Match data is also read from the XML DOM.
+             ================================================================ -->
+        <section id="matchesView" class="app-view" aria-labelledby="matchesHeading" hidden>
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">Tournament Operations</p>
+                    <h2 id="matchesHeading">Court Schedule & Matches</h2>
+                </div>
+            </div>
+
+            <article class="panel">
+                <div class="table-wrapper">
+                    <table>
+                        <caption>Match and court schedule loaded from XML</caption>
+                        <thead>
+                            <tr>
+                                <th>Match ID</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Court</th>
+                                <th>Category</th>
+                                <th>Participant 1</th>
+                                <th>Participant 2</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="matchesTableBody"></tbody>
+                    </table>
+                </div>
+            </article>
+        </section>
+
+        <!-- ================================================================
+             VIEW 4: PUBLIC RESULTS
+             Only completed matches with winner information are shown.
+             ================================================================ -->
+        <section id="resultsView" class="app-view" aria-labelledby="resultsHeading" hidden>
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">Public View</p>
+                    <h2 id="resultsHeading">Tournament Results</h2>
+                </div>
+            </div>
+
+            <div id="resultsCards" class="results-grid"></div>
+        </section>
+
+        <!-- ================================================================
+             VIEW 5: DATA TOOLS / PERSISTENCE
+             Demonstrates XMLSerializer and saving/reloading modified XML.
+             ================================================================ -->
+        <section id="dataView" class="app-view" aria-labelledby="dataHeading" hidden>
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">Task 3</p>
+                    <h2 id="dataHeading">Serialize & Save XML</h2>
+                </div>
+            </div>
+
+            <div class="two-column">
+                <article class="panel">
+                    <h3>Persistence Tools</h3>
+                    <p>
+                        CRUD changes first happen in the browser's XML DOM. Use the buttons below to
+                        serialize and preserve the latest XML data.
+                    </p>
+
+                    <div class="button-stack">
+                        <button id="downloadXmlButton" class="button button-primary" type="button">Download Updated XML</button>
+
+                        <!-- Import is useful to prove the exported changes can be reloaded. -->
+                        <label class="file-button">
+                            Import Saved XML
+                            <input id="importXmlInput" type="file" accept=".xml,text/xml,application/xml">
+                        </label>
+
+                        <!-- Extra feature requested by the project team. -->
+                        <button id="excelButton" class="button button-secondary" type="button">Export Data to Excel</button>
+
+                        <!-- Restores the original XML file from the server and clears browser autosave. -->
+                        <button id="resetButton" class="button button-danger" type="button">Reset to Original XML</button>
+                    </div>
+
+                    <p class="help-text">
+                        Browser autosave is also enabled using localStorage. This is only a convenience feature;
+                        the required project persistence method is the downloadable serialized XML file.
+                    </p>
+                </article>
+
+                <article class="panel">
+                    <div class="section-heading compact-heading">
+                        <h3>XMLSerializer Preview</h3>
+                        <button id="previewXmlButton" class="button button-secondary" type="button">Refresh Preview</button>
+                    </div>
+                    <pre id="xmlPreview" class="xml-preview" tabindex="0">XML preview will appear here.</pre>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>TMS6124 Web Authoring • XML DOM CRUD Pickleball Tournament Management System</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    TMS6124 WEB AUTHORING PROJECT
+    FILE: xml/pickleball.xml
+
+    WHAT THIS FILE DOES:
+    - This is the PRIMARY structured data source for the web application.
+    - JavaScript loads this file with fetch() and parses it with DOMParser.
+    - The HTML file does NOT duplicate this player dataset.
+
+    EASY CHANGES:
+    - Tournament details: edit <Tournament>.
+    - Clubs: edit <Clubs>.
+    - Starting players: edit <Players>.
+    - Match schedule/results: edit <Matches>.
+
+    IMPORTANT:
+    - Keep only ONE root element: <PickleballTournamentSystem>.
+    - Keep every PlayerID and MatchID unique.
+    - Keep XML tags properly nested and closed.
+-->
+<PickleballTournamentSystem>
+
+    <!-- ============================================================
+         TOURNAMENT INFORMATION
+         Required fields: ID, name, date, venue and organiser.
+         ============================================================ -->
+    <Tournament>
+        <TournamentID>T2026-SWK-001</TournamentID>
+        <TournamentName>Sarawak Inter-Club Pickleball Championship 2026</TournamentName>
+        <Date>2026-09-12</Date>
+        <Venue>Pickleball Arena Kuching, Sarawak</Venue>
+        <Organiser>Sarawak Community Sports Association</Organiser>
+    </Tournament>
+
+    <!-- ============================================================
+         CLUBS
+         Club data is also used to fill the Add/Edit Player dropdown.
+         ============================================================ -->
+    <Clubs>
+        <Club ClubID="C001"><ClubName>UNIMAS Pickleball Club</ClubName></Club>
+        <Club ClubID="C002"><ClubName>Kuching Pickleball Club</ClubName></Club>
+        <Club ClubID="C003"><ClubName>Samarahan Racquets</ClubName></Club>
+        <Club ClubID="C004"><ClubName>Petra Jaya Pickleball</ClubName></Club>
+        <Club ClubID="C005"><ClubName>Sarawak Smash Club</ClubName></Club>
+    </Clubs>
+
+    <!-- ============================================================
+         PLAYERS
+         PlayerID is an XML attribute.
+         Other player data is stored in child elements.
+         ============================================================ -->
+    <Players>
+        <Player PlayerID="P001"><Name>Adam Firdaus</Name><Club>UNIMAS Pickleball Club</Club><Category>Men Singles</Category><Status>Confirmed</Status><RegistrationFee>30.00</RegistrationFee></Player>
+        <Player PlayerID="P002"><Name>Aina Sofea</Name><Club>UNIMAS Pickleball Club</Club><Category>Women Singles</Category><Status>Confirmed</Status><RegistrationFee>30.00</RegistrationFee></Player>
+        <Player PlayerID="P003"><Name>Daniel Ting</Name><Club>Kuching Pickleball Club</Club><Category>Men Singles</Category><Status>Confirmed</Status><RegistrationFee>30.00</RegistrationFee></Player>
+        <Player PlayerID="P004"><Name>Melissa Lau</Name><Club>Kuching Pickleball Club</Club><Category>Women Singles</Category><Status>Pending</Status><RegistrationFee>30.00</RegistrationFee></Player>
+        <Player PlayerID="P005"><Name>Hafiz Rahman</Name><Club>Samarahan Racquets</Club><Category>Men Doubles</Category><Status>Confirmed</Status><RegistrationFee>40.00</RegistrationFee></Player>
+        <Player PlayerID="P006"><Name>Syafiq Azlan</Name><Club>Samarahan Racquets</Club><Category>Men Doubles</Category><Status>Confirmed</Status><RegistrationFee>40.00</RegistrationFee></Player>
+        <Player PlayerID="P007"><Name>Nur Izzati</Name><Club>Petra Jaya Pickleball</Club><Category>Women Doubles</Category><Status>Confirmed</Status><RegistrationFee>40.00</RegistrationFee></Player>
+        <Player PlayerID="P008"><Name>Vivian Wong</Name><Club>Petra Jaya Pickleball</Club><Category>Women Doubles</Category><Status>Confirmed</Status><RegistrationFee>40.00</RegistrationFee></Player>
+        <Player PlayerID="P009"><Name>Raymond Lee</Name><Club>Sarawak Smash Club</Club><Category>Mixed Doubles</Category><Status>Confirmed</Status><RegistrationFee>40.00</RegistrationFee></Player>
+        <Player PlayerID="P010"><Name>Nadia Karim</Name><Club>Sarawak Smash Club</Club><Category>Mixed Doubles</Category><Status>Confirmed</Status><RegistrationFee>40.00</RegistrationFee></Player>
+        <Player PlayerID="P011"><Name>Joshua Tan</Name><Club>UNIMAS Pickleball Club</Club><Category>Men Singles</Category><Status>Pending</Status><RegistrationFee>30.00</RegistrationFee></Player>
+        <Player PlayerID="P012"><Name>Dayang Alya</Name><Club>UNIMAS Pickleball Club</Club><Category>Women Singles</Category><Status>Confirmed</Status><RegistrationFee>30.00</RegistrationFee></Player>
+        <Player PlayerID="P013"><Name>Farhan Hakim</Name><Club>Kuching Pickleball Club</Club><Category>Men Doubles</Category><Status>Confirmed</Status><RegistrationFee>40.00</RegistrationFee></Player>
+        <Player PlayerID="P014"><Name>Kelvin Sim</Name><Club>Kuching Pickleball Club</Club><Category>Men Doubles</Category><Status>Confirmed</Status><RegistrationFee>40.00</RegistrationFee></Player>
+        <Player PlayerID="P015"><Name>Siti Maryam</Name><Club>Samarahan Racquets</Club><Category>Women Singles</Category><Status>Confirmed</Status><RegistrationFee>30.00</RegistrationFee></Player>
+        <Player PlayerID="P016"><Name>Cheryl Goh</Name><Club>Samarahan Racquets</Club><Category>Women Doubles</Category><Status>Pending</Status><RegistrationFee>40.00</RegistrationFee></Player>
+        <Player PlayerID="P017"><Name>Amirul Faiz</Name><Club>Petra Jaya Pickleball</Club><Category>Mixed Doubles</Category><Status>Confirmed</Status><RegistrationFee>40.00</RegistrationFee></Player>
+        <Player PlayerID="P018"><Name>Elaine Chai</Name><Club>Petra Jaya Pickleball</Club><Category>Mixed Doubles</Category><Status>Confirmed</Status><RegistrationFee>40.00</RegistrationFee></Player>
+        <Player PlayerID="P019"><Name>Khairul Anwar</Name><Club>Sarawak Smash Club</Club><Category>Men Singles</Category><Status>Withdrawn</Status><RegistrationFee>30.00</RegistrationFee></Player>
+        <Player PlayerID="P020"><Name>Joanne Ling</Name><Club>Sarawak Smash Club</Club><Category>Women Singles</Category><Status>Confirmed</Status><RegistrationFee>30.00</RegistrationFee></Player>
+        <Player PlayerID="P021"><Name>Faris Iskandar</Name><Club>UNIMAS Pickleball Club</Club><Category>Mixed Doubles</Category><Status>Confirmed</Status><RegistrationFee>40.00</RegistrationFee></Player>
+        <Player PlayerID="P022"><Name>Amanda Jalin</Name><Club>Kuching Pickleball Club</Club><Category>Women Doubles</Category><Status>Confirmed</Status><RegistrationFee>40.00</RegistrationFee></Player>
+        <Player PlayerID="P023"><Name>Marcus Jang</Name><Club>Samarahan Racquets</Club><Category>Men Singles</Category><Status>Confirmed</Status><RegistrationFee>30.00</RegistrationFee></Player>
+        <Player PlayerID="P024"><Name>Puteri Hani</Name><Club>Petra Jaya Pickleball</Club><Category>Women Singles</Category><Status>Confirmed</Status><RegistrationFee>30.00</RegistrationFee></Player>
+    </Players>
+
+    <!-- ============================================================
+         MATCH / SCHEDULE RECORDS
+         At least 10 records are required; this prototype contains 12.
+         Status can be Scheduled or Completed.
+         Winner is left empty for matches not yet completed.
+         ============================================================ -->
+    <Matches>
+        <Match MatchID="M001"><Date>2026-09-12</Date><Time>09:00</Time><Court>Court 1</Court><Category>Men Singles</Category><Participant1>Adam Firdaus</Participant1><Participant2>Daniel Ting</Participant2><Status>Completed</Status><Winner>Adam Firdaus</Winner></Match>
+        <Match MatchID="M002"><Date>2026-09-12</Date><Time>09:00</Time><Court>Court 2</Court><Category>Women Singles</Category><Participant1>Aina Sofea</Participant1><Participant2>Dayang Alya</Participant2><Status>Completed</Status><Winner>Dayang Alya</Winner></Match>
+        <Match MatchID="M003"><Date>2026-09-12</Date><Time>10:00</Time><Court>Court 1</Court><Category>Men Doubles</Category><Participant1>Hafiz Rahman / Syafiq Azlan</Participant1><Participant2>Farhan Hakim / Kelvin Sim</Participant2><Status>Completed</Status><Winner>Hafiz Rahman / Syafiq Azlan</Winner></Match>
+        <Match MatchID="M004"><Date>2026-09-12</Date><Time>10:00</Time><Court>Court 2</Court><Category>Mixed Doubles</Category><Participant1>Raymond Lee / Nadia Karim</Participant1><Participant2>Amirul Faiz / Elaine Chai</Participant2><Status>Scheduled</Status><Winner></Winner></Match>
+        <Match MatchID="M005"><Date>2026-09-12</Date><Time>11:00</Time><Court>Court 1</Court><Category>Women Doubles</Category><Participant1>Nur Izzati / Vivian Wong</Participant1><Participant2>Amanda Jalin / Cheryl Goh</Participant2><Status>Scheduled</Status><Winner></Winner></Match>
+        <Match MatchID="M006"><Date>2026-09-12</Date><Time>11:00</Time><Court>Court 2</Court><Category>Men Singles</Category><Participant1>Marcus Jang</Participant1><Participant2>Adam Firdaus</Participant2><Status>Scheduled</Status><Winner></Winner></Match>
+        <Match MatchID="M007"><Date>2026-09-12</Date><Time>13:00</Time><Court>Court 1</Court><Category>Women Singles</Category><Participant1>Siti Maryam</Participant1><Participant2>Joanne Ling</Participant2><Status>Scheduled</Status><Winner></Winner></Match>
+        <Match MatchID="M008"><Date>2026-09-12</Date><Time>13:00</Time><Court>Court 2</Court><Category>Mixed Doubles</Category><Participant1>Faris Iskandar / Aina Sofea</Participant1><Participant2>Raymond Lee / Nadia Karim</Participant2><Status>Scheduled</Status><Winner></Winner></Match>
+        <Match MatchID="M009"><Date>2026-09-12</Date><Time>14:00</Time><Court>Court 1</Court><Category>Men Doubles</Category><Participant1>Hafiz Rahman / Syafiq Azlan</Participant1><Participant2>Farhan Hakim / Kelvin Sim</Participant2><Status>Scheduled</Status><Winner></Winner></Match>
+        <Match MatchID="M010"><Date>2026-09-12</Date><Time>14:00</Time><Court>Court 2</Court><Category>Women Singles</Category><Participant1>Puteri Hani</Participant1><Participant2>Dayang Alya</Participant2><Status>Scheduled</Status><Winner></Winner></Match>
+        <Match MatchID="M011"><Date>2026-09-12</Date><Time>15:00</Time><Court>Court 1</Court><Category>Men Singles</Category><Participant1>Daniel Ting</Participant1><Participant2>Marcus Jang</Participant2><Status>Scheduled</Status><Winner></Winner></Match>
+        <Match MatchID="M012"><Date>2026-09-12</Date><Time>15:00</Time><Court>Court 2</Court><Category>Mixed Doubles</Category><Participant1>Amirul Faiz / Elaine Chai</Participant1><Participant2>Faris Iskandar / Aina Sofea</Participant2><Status>Scheduled</Status><Winner></Winner></Match>
+    </Matches>
+
+</PickleballTournamentSystem>
